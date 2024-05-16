@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Swift.AES;
+using Swift.Core.Interfaces;
+
+
 //using Swift.Services.Interfaces;
 using Swift.Core.Models;
+using Swift.Services;
+using System.Text;
 
 namespace Swift.Api.Controllers
 {
@@ -10,20 +16,21 @@ namespace Swift.Api.Controllers
 	public class RoleController : Controller
 	{
 
-        //private IUserService _userService;
-        //public RoleController(IUserService userService)
-        //{
-        //    _userService = userService;
-        //}
+        private readonly IRoleService _roleService;
+        public RoleController(IRoleService roleService)
+        {
+            _roleService = roleService;
+        }
 
         // GET: Role/GetAllRoleDetails
         [HttpGet(Name = "GetAllRoleDetails")]	
-        public ActionResult GetAllRoleDetails()
+        public async Task<ActionResult> GetAllRoleDetails()
         {
-            List<RoleModel> RoleModelList = new List<RoleModel>();
+            List<RoleModel> roleModelList = new List<RoleModel>();
             try
             {
-                return Ok(RoleModelList);
+                roleModelList = await _roleService.GetAllRoleDetails();
+                return Ok(roleModelList);
             }
             catch
             {
@@ -36,11 +43,20 @@ namespace Swift.Api.Controllers
 		public async Task<IActionResult> AddRole(RoleModel RoleModel)
 		{
 
-            try
+            var addResult = false;
+            if (ModelState.IsValid)
             {
-                return Ok(RoleModel);
+                try
+                { 
+                    addResult = await _roleService.CreateRole(RoleModel);                    
+                    return Ok(addResult);
+                }
+                catch
+                {
+                    return BadRequest();
+                }
             }
-            catch
+            else
             {
                 return BadRequest();
             }
