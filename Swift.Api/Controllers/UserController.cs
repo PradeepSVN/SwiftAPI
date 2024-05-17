@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using Swift.AES;
 using System.Text;
+using Swift.Services;
 namespace Swift.Api.Controllers
 {
 	[ApiController]
@@ -76,12 +77,13 @@ namespace Swift.Api.Controllers
 
 		// GET: Bind controls to Update details
 		[HttpGet(Name = "EditUserDetails")]
-		public ActionResult EditUserDetails(int id)
+		public async Task<ActionResult> EditUserDetails(int user_ID)
 		{
 			// UserModel userModel = new UserModel();
 			try
 			{
-				return Ok();
+				var userModel = await _userService.EditUserDetailsById(user_ID);
+				return Ok(userModel);
 			}
 			catch
 			{
@@ -91,11 +93,17 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditUserDetails")]
-		public ActionResult EditUserDetails(int id, UserModel userModel)
+		public async Task<ActionResult> EditUserDetails(int User_ID, UserModel userModel)
 		{
 			try
 			{
-				return Ok();
+				var updateResult = false;
+				var result = await _userService.ValidateUserByUserName(User_ID, userModel.User_UserName);
+				if (result)
+				{
+					updateResult = await _userService.UpdateUserDetailsById(User_ID, userModel);
+				}
+				return Ok(updateResult);
 			}
 			catch
 			{

@@ -69,13 +69,14 @@ namespace Swift.Api.Controllers
 
 		// GET: Bind controls to Update details
 		[HttpGet(Name = "EditRoleDetails")]
-		public ActionResult EditRoleDetails(int id)
+		public async Task<ActionResult> EditRoleDetails(Guid role_UID)
         {
            // RoleModel RoleModel = new RoleModel();
             try
             {
-                return Ok();
-            }
+				var roleModel = await _roleService.EditRoleDetailsById(role_UID);
+				return Ok(roleModel);
+			}
             catch
             {
                 return BadRequest();
@@ -84,11 +85,17 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditRoleDetails")]
-		public ActionResult EditRoleDetails(int id, RoleModel roleModel)
+		public async Task<ActionResult> EditRoleDetails(string role_ID, RoleModel roleModel)
         {
             try
             {
-                return Ok();
+                var updateResult = false;
+				var result = await _roleService.ValidateRoleByRoleId(roleModel.Role_UID, roleModel.Role_ID);
+				if (result)
+				{
+					 updateResult = await _roleService.UpdateRoleDetailsById(role_ID, roleModel);
+                }
+				return Ok(updateResult);
             }
             catch
             {

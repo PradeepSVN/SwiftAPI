@@ -12,6 +12,7 @@ namespace Swift.Core.Interfaces
 		Task<bool> ValidateRoleByRoleId(Guid? role_UID, string role_ID);
 		Task<bool> CreateRole(RoleModel roleModel);
 		Task<List<RoleModel>> GetAllRoleDetails();
-
-    }
+		Task<RoleModel> EditRoleDetailsById(Guid role_UID);
+		Task<bool> UpdateRoleDetailsById(string role_ID, RoleModel roleModel);
+	}
 }
