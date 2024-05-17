@@ -40,17 +40,21 @@ namespace Swift.Api.Controllers
         }
         // POST: Role/AddRole
         [HttpPost(Name = "AddRole")]		
-		public async Task<IActionResult> AddRole(RoleModel RoleModel)
+		public async Task<IActionResult> AddRole(RoleModel roleModel)
 		{
 
             var addResult = false;
             if (ModelState.IsValid)
             {
                 try
-                { 
-                    addResult = await _roleService.CreateRole(RoleModel);                    
-                    return Ok(addResult);
-                }
+                {
+					var result = await _roleService.ValidateRoleByRoleId(roleModel.Role_UID, roleModel.Role_ID);
+                    if (result)
+                    {
+                        addResult = await _roleService.CreateRole(roleModel);                       
+                    }
+					return Ok(addResult);
+				}
                 catch
                 {
                     return BadRequest();
@@ -80,7 +84,7 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditRoleDetails")]
-		public ActionResult EditRoleDetails(int id, RoleModel RoleModel)
+		public ActionResult EditRoleDetails(int id, RoleModel roleModel)
         {
             try
             {

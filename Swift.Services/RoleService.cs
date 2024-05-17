@@ -29,10 +29,34 @@ namespace Swift.Services
                 return new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
             }
         }
-        #endregion
+		#endregion
 
-       
-        public async Task<bool> CreateRole(RoleModel roleModel)
+		public async Task<bool> ValidateRoleByRoleId(Guid? role_UID, string role_ID)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					DynamicParameters ObjParm = new DynamicParameters();
+					ObjParm.Add("@Role_UID", role_UID);
+					ObjParm.Add("@Role_ID", role_ID);
+					ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
+					dbConnection.Open();
+					await dbConnection.ExecuteAsync("SW_usp_GetRoleValidationByRoleId", ObjParm, commandType: CommandType.StoredProcedure);
+					int result = ObjParm.Get<int>("@result");
+					dbConnection.Close();
+					return result == 0 ? true : false;
+				}
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+			//var result = await _customerRepository.GetByIdAsync(customerId);
+
+			//return result != null ? true : false;
+		}
+		public async Task<bool> CreateRole(RoleModel roleModel)
         {
             try
             {

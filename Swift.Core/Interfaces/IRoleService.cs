@@ -9,7 +9,7 @@ namespace Swift.Core.Interfaces
 {
 	public interface IRoleService
 	{
-		
+		Task<bool> ValidateRoleByRoleId(Guid? role_UID, string role_ID);
 		Task<bool> CreateRole(RoleModel roleModel);
 		Task<List<RoleModel>> GetAllRoleDetails();
 
