@@ -11,6 +11,7 @@ namespace Swift.Core.Interfaces
 	{
 		Task<bool> ValidateUserByUserName(int? userId, string userName);
 		Task<bool> CreateUser(UserModel userModel);
+        Task <List<UserModel>> GetAllUserDetails();
 
 	}
 }

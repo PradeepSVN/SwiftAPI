@@ -81,12 +81,35 @@ namespace Swift.Services
                     ObjParm.Add("@User_Password", userModel.User_Password);
                     ObjParm.Add("@User_Terminated", userModel.User_Terminated);
                     ObjParm.Add("@User_Terminated_Date", userModel.User_Terminated_Date);
+                    ObjParm.Add("@Created_By_User_UID", userModel.Created_By_User_UID);
                     ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
                     dbConnection.Open();
                     await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateUserDetails", ObjParm, commandType: CommandType.StoredProcedure);
                     int result = ObjParm.Get<int>("@result");
                     dbConnection.Close();
                     return result == 1 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
+        public async Task<List<UserModel>> GetAllUserDetails()
+        {
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails",
+                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                    dbConnection.Close();
+                    return result.ToList();
                 }
             }
             catch (Exception ex)

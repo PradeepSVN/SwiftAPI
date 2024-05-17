@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Swift.AES;
+using Swift.Core.Interfaces;
+
+
 //using Swift.Services.Interfaces;
 using Swift.Core.Models;
+using Swift.Services;
+using System.Text;
 
 namespace Swift.Api.Controllers
 {
@@ -10,20 +16,21 @@ namespace Swift.Api.Controllers
 	public class RoleController : Controller
 	{
 
-        //private IUserService _userService;
-        //public RoleController(IUserService userService)
-        //{
-        //    _userService = userService;
-        //}
+        private readonly IRoleService _roleService;
+        public RoleController(IRoleService roleService)
+        {
+            _roleService = roleService;
+        }
 
         // GET: Role/GetAllRoleDetails
         [HttpGet(Name = "GetAllRoleDetails")]	
-        public ActionResult GetAllRoleDetails()
+        public async Task<ActionResult> GetAllRoleDetails()
         {
-            List<RoleModel> RoleModelList = new List<RoleModel>();
+            List<RoleModel> roleModelList = new List<RoleModel>();
             try
             {
-                return Ok(RoleModelList);
+                roleModelList = await _roleService.GetAllRoleDetails();
+                return Ok(roleModelList);
             }
             catch
             {
@@ -33,14 +40,27 @@ namespace Swift.Api.Controllers
         }
         // POST: Role/AddRole
         [HttpPost(Name = "AddRole")]		
-		public async Task<IActionResult> AddRole(RoleModel RoleModel)
+		public async Task<IActionResult> AddRole(RoleModel roleModel)
 		{
 
-            try
+            var addResult = false;
+            if (ModelState.IsValid)
             {
-                return Ok(RoleModel);
+                try
+                {
+					var result = await _roleService.ValidateRoleByRoleId(roleModel.Role_UID, roleModel.Role_ID);
+                    if (result)
+                    {
+                        addResult = await _roleService.CreateRole(roleModel);                       
+                    }
+					return Ok(addResult);
+				}
+                catch
+                {
+                    return BadRequest();
+                }
             }
-            catch
+            else
             {
                 return BadRequest();
             }
@@ -64,7 +84,7 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditRoleDetails")]
-		public ActionResult EditRoleDetails(int id, RoleModel RoleModel)
+		public ActionResult EditRoleDetails(int id, RoleModel roleModel)
         {
             try
             {

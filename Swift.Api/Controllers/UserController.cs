@@ -20,12 +20,13 @@ namespace Swift.Api.Controllers
 		}
 
 		[HttpGet(Name = "GetAllUserDetails")]
-		public IActionResult GetAllUserDetails()
+		public async Task<IActionResult> GetAllUserDetails()
 		{
 			List<UserModel> userModelList = new List<UserModel>();
 			try
 			{
-				return Ok(userModelList);
+                userModelList = await _userService.GetAllUserDetails();
+                return Ok(userModelList);
 			}
 			catch
 			{
