@@ -186,6 +186,49 @@ namespace Swift.Services
 
 			}
 		}
-	}
+		public async Task<List<UserEntitieModel>> GetEntityDetails()
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<UserEntitieModel>("SW_usp_GetEntityList",
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
 
+			}
+		}
+		public async Task<List<UserTINModel>> GetTinDetails(string entity_ID)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<UserTINModel>("SW_usp_GetTINListByEntityId", new { Entity_ID = entity_ID },
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+	}
 }

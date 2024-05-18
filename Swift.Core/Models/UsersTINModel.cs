@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Swift.Core.Models
 {
-    public class UsersTINModel
+    public class UsersTINsModel
     {
         public Guid User_UID { get; set; }
         public string TIN_ID { get; set; }
@@ -17,4 +17,10 @@ namespace Swift.Core.Models
         public DateTime Updated_Date { get; set; }
 
     }
+	public class UserTINModel
+	{
+		public string TIN_ID { get; set; }
+		public string TIN_Name { get; set; }
+		
+	}
 }
