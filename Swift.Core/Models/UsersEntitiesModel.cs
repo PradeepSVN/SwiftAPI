@@ -17,4 +17,10 @@ namespace Swift.Core.Models
         public DateTime Updated_Date { get; set; }
 
     }
+	public class UserEntitieModel
+	{
+		public string Entity_ID { get; set; }
+		public string Entity_Name { get; set; }
+
+	}
 }
