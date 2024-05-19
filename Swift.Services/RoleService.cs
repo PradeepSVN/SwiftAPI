@@ -106,7 +106,7 @@ namespace Swift.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var result = await dbConnection.QueryAsync<RoleModel>("SW_usp_GetRoleDetails",
+                    var result = await dbConnection.QueryAsync<RoleModel>("SW_usp_GetRoleDetails", new { Role_UID = "" },
                         commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
                     return result.ToList();
