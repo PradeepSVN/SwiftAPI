@@ -19,7 +19,8 @@ namespace Swift.Api.Controllers
 	{
 		public IConfiguration _configuration;
         private readonly ILoginService _loginService;
-        public LoginController(ILoginService loginService, IConfiguration configuration)
+	
+		public LoginController(ILoginService loginService, IConfiguration configuration)
 		{
 			_loginService = loginService;
             _configuration = configuration;
@@ -47,7 +48,9 @@ namespace Swift.Api.Controllers
 					if (status)
 					{
 						var tokenString = GenerateJSONWebToken(loginModel);
-						response = Ok(new { token = tokenString });
+						var userModel = _loginService.GetLoginUserDetails(loginModel);
+
+						response = Ok(new { token = tokenString, userid = userModel.Result.User_UID }) ;
 					}
 					string result = "", responseMessage = "";
 					return response;
