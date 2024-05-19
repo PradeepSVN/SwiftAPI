@@ -10,5 +10,6 @@ namespace Swift.Core.Interfaces
     public interface ILoginService
     {
         Task<bool> Login(LoginModel loginModel);
+        Task<UserModel> GetLoginUserDetails(LoginModel loginModel);
     }
 }

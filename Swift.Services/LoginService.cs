@@ -54,5 +54,26 @@ namespace Swift.Services
 
             //return result != null ? true : false;
         }
-    }
+		public async Task<UserModel> GetLoginUserDetails(LoginModel loginModel)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{					
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetLoginUserDetails", new { UserName = loginModel.UserName},
+					   commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.SingleOrDefault();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			//var result = await _customerRepository.GetByIdAsync(customerId);
+
+			//return result != null ? true : false;
+		}
+	}
 }
