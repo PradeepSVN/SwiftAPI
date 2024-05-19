@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 	options.AddPolicy("AllowReact",
 		builder =>
 		{
-			builder.WithOrigins("http://localhost:3000")
+			builder.WithOrigins("http://localhost:3001")
 				.AllowAnyHeader()
 				.AllowAnyMethod();
 		});
@@ -39,7 +39,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 var app = builder.Build();
-app.UseCors("AllowReact");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -52,5 +52,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors("AllowReact");
 app.Run();
