@@ -38,6 +38,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IMasterService, MasterService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
