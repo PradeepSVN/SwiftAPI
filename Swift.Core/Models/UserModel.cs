@@ -35,13 +35,14 @@ namespace Swift.Core.Models
 		public Guid Created_By_User_UID { get; set; }
 		public DateTime Created_Date { get; set; }
 		public Guid Updated_By_User_UID { get; set; }
+	
 		public DateTime Updated_Date { get; set; }
 		public DateTime User_Password_Changed_Date { get; set; }
 		public string? User_Note { get; set; }
 
 		public required string User_UserName { get; set; }
-		[Required]
-		public required string User_Password { get; set; }
+	
+		public  string User_Password { get; set; }
 		public bool User_Terminated { get; set; }
 		public DateTime User_Terminated_Date { get; set; }
 		public Guid Role_UID { get; set; }
