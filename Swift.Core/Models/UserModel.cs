@@ -44,5 +44,20 @@ namespace Swift.Core.Models
 		public required string User_Password { get; set; }
 		public bool User_Terminated { get; set; }
 		public DateTime User_Terminated_Date { get; set; }
+		public Guid Role_UID { get; set; }
+		public string Entities { get; set; }
+		public string TINs { get; set; }
+	}
+	public class UserEntitieModel
+	{
+		public string Entity_ID { get; set; }
+		public string Entity_Name { get; set; }
+
+	}
+	public class UserTINModel
+	{
+		public string TIN_ID { get; set; }
+		public string TIN_Name { get; set; }
+
 	}
 }

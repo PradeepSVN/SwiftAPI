@@ -63,6 +63,7 @@ namespace Swift.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     DynamicParameters ObjParm = new DynamicParameters();
+                    ObjParm.Add("@User_UID", userModel.User_UID);
                     ObjParm.Add("@User_ID", userModel.User_ID);
                     ObjParm.Add("@User_Prac_Admin", userModel.User_Prac_Admin);
                     ObjParm.Add("@User_First_Name", userModel.User_First_Name);
@@ -81,6 +82,9 @@ namespace Swift.Services
                     ObjParm.Add("@User_Password", userModel.User_Password);
                     ObjParm.Add("@User_Terminated", userModel.User_Terminated);
                     ObjParm.Add("@User_Terminated_Date", userModel.User_Terminated_Date);
+                    ObjParm.Add("@Role_UID", userModel.Role_UID);
+                    ObjParm.Add("@Entities", userModel.Entities);
+                    ObjParm.Add("@TINs", userModel.TINs);
                     ObjParm.Add("@Created_By_User_UID", userModel.Created_By_User_UID);
                     ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
                     dbConnection.Open();
@@ -186,49 +190,49 @@ namespace Swift.Services
 
 			}
 		}
-		public async Task<List<UserEntitieModel>> GetEntityDetails()
-		{
-			try
-			{
-				using (IDbConnection dbConnection = Connection)
-				{
-					dbConnection.Open();
-					var result = await dbConnection.QueryAsync<UserEntitieModel>("SW_usp_GetEntityList",
-						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-					dbConnection.Close();
-					return result.ToList();
-				}
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			finally
-			{
+		//public async Task<List<UserEntitieModel>> GetUserEntityDetails()
+		//{
+		//	try
+		//	{
+		//		using (IDbConnection dbConnection = Connection)
+		//		{
+		//			dbConnection.Open();
+		//			var result = await dbConnection.QueryAsync<UserEntitieModel>("SW_usp_GetEntityList",
+		//				commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+		//			dbConnection.Close();
+		//			return result.ToList();
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		throw ex;
+		//	}
+		//	finally
+		//	{
 
-			}
-		}
-		public async Task<List<UserTINModel>> GetTinDetails(string entity_ID)
-		{
-			try
-			{
-				using (IDbConnection dbConnection = Connection)
-				{
-					dbConnection.Open();
-					var result = await dbConnection.QueryAsync<UserTINModel>("SW_usp_GetTINListByEntityId", new { Entity_ID = entity_ID },
-						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-					dbConnection.Close();
-					return result.ToList();
-				}
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			finally
-			{
+		//	}
+		//}
+		//public async Task<List<UserTINModel>> GetUserTinDetails(string entity_ID)
+		//{
+		//	try
+		//	{
+		//		using (IDbConnection dbConnection = Connection)
+		//		{
+		//			dbConnection.Open();
+		//			var result = await dbConnection.QueryAsync<UserTINModel>("SW_usp_GetTINListByEntityId", new { Entity_ID = entity_ID },
+		//				commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+		//			dbConnection.Close();
+		//			return result.ToList();
+		//		}
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		throw ex;
+		//	}
+		//	finally
+		//	{
 
-			}
-		}
+		//	}
+		//}
 	}
 }

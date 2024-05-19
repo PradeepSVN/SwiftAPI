@@ -125,35 +125,35 @@ namespace Swift.Api.Controllers
 			}
 		}
 
-		// GET: Entity details
-		[HttpGet(Name = "GetEntityDetails")]
-		public async Task<ActionResult> GetEntityDetails()
-		{
-			// UserModel userModel = new UserModel();
-			try
-			{
-				var userModel = await _userService.GetEntityDetails();
-				return Ok(userModel);
-			}
-			catch
-			{
-				return BadRequest();
-			}
-		}
-		// GET: Tin details
-		[HttpGet(Name = "GetTinDetails")]
-		public async Task<ActionResult> GetTinDetails(string entity_ID)
-		{
-			// UserModel userModel = new UserModel();
-			try
-			{
-				var userModel = await _userService.GetTinDetails(entity_ID);
-				return Ok(userModel);
-			}
-			catch
-			{
-				return BadRequest();
-			}
-		}
+		//// GET: Entity details
+		//[HttpGet(Name = "GetUserEntityDetails")]
+		//public async Task<ActionResult> GetEntityDetails()
+		//{
+		//	// UserModel userModel = new UserModel();
+		//	try
+		//	{
+		//		var userModel = await _userService.GetUserEntityDetails();
+		//		return Ok(userModel);
+		//	}
+		//	catch
+		//	{
+		//		return BadRequest();
+		//	}
+		//}
+		//// GET: Tin details
+		//[HttpGet(Name = "GetTinDetails")]
+		//public async Task<ActionResult> GetUserTinDetails(string entity_ID)
+		//{
+		//	// UserModel userModel = new UserModel();
+		//	try
+		//	{
+		//		var userModel = await _userService.GetUserTinDetails(entity_ID);
+		//		return Ok(userModel);
+		//	}
+		//	catch
+		//	{
+		//		return BadRequest();
+		//	}
+		//}
 	}
 }
