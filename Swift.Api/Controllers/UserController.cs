@@ -162,35 +162,35 @@ namespace Swift.Api.Controllers
 			}
 		}
 
-		//// GET: Entity details
-		//[HttpGet(Name = "GetUserEntityDetails")]
-		//public async Task<ActionResult> GetEntityDetails()
-		//{
-		//	// UserModel userModel = new UserModel();
-		//	try
-		//	{
-		//		var userModel = await _userService.GetUserEntityDetails();
-		//		return Ok(userModel);
-		//	}
-		//	catch
-		//	{
-		//		return BadRequest();
-		//	}
-		//}
-		//// GET: Tin details
-		//[HttpGet(Name = "GetTinDetails")]
-		//public async Task<ActionResult> GetUserTinDetails(string entity_ID)
-		//{
-		//	// UserModel userModel = new UserModel();
-		//	try
-		//	{
-		//		var userModel = await _userService.GetUserTinDetails(entity_ID);
-		//		return Ok(userModel);
-		//	}
-		//	catch
-		//	{
-		//		return BadRequest();
-		//	}
-		//}
+		// GET: Entity details
+		[HttpGet(Name = "GetUserEntityDetails")]
+		public async Task<ActionResult> GetUserEntityDetails(Guid user_UID)
+		{
+			// UserModel userModel = new UserModel();
+			try
+			{
+				var userModel = await _userService.GetUserEntityDetails(user_UID);
+				return Ok(userModel);
+			}
+			catch
+			{
+				return BadRequest();
+			}
+		}
+		// GET: Tin details
+		[HttpGet(Name = "GetUserTinDetails")]
+		public async Task<ActionResult> GetUserTinDetails(Guid user_UID)
+		{
+			// UserModel userModel = new UserModel();
+			try
+			{
+				var userModel = await _userService.GetUserTinDetails(user_UID);
+				return Ok(userModel);
+			}
+			catch
+			{
+				return BadRequest();
+			}
+		}
 	}
 }

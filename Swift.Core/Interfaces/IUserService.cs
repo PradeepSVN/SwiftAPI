@@ -14,7 +14,7 @@ namespace Swift.Core.Interfaces
         Task <List<UserModel>> GetAllUserDetails();
 		Task<UserModel> EditUserDetailsById(int user_ID);
 		Task<bool> UpdateUserDetailsById(int user_ID, UserModel userModel);
-		//Task<List<UserEntitieModel>> GetUserEntityDetails();
-		//Task<List<UserTINModel>> GetUserTinDetails(string entity_ID);
+		Task<List<UserEntitieModel>> GetUserEntityDetails(Guid user_UID);
+		Task<List<UserTINModel>> GetUserTinDetails(Guid user_UID);
 	}
 }
