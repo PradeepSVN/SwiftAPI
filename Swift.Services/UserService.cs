@@ -191,49 +191,49 @@ namespace Swift.Services
 
 			}
 		}
-		//public async Task<List<UserEntitieModel>> GetUserEntityDetails()
-		//{
-		//	try
-		//	{
-		//		using (IDbConnection dbConnection = Connection)
-		//		{
-		//			dbConnection.Open();
-		//			var result = await dbConnection.QueryAsync<UserEntitieModel>("SW_usp_GetEntityList",
-		//				commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-		//			dbConnection.Close();
-		//			return result.ToList();
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		throw ex;
-		//	}
-		//	finally
-		//	{
+        public async Task<List<UserEntitieModel>> GetUserEntityDetails(Guid user_UID)
+        {
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var result = await dbConnection.QueryAsync<UserEntitieModel>("SW_usp_GetUserEntityList", new { User_UID = user_UID },
+                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                    dbConnection.Close();
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally 
+            {
 
-		//	}
-		//}
-		//public async Task<List<UserTINModel>> GetUserTinDetails(string entity_ID)
-		//{
-		//	try
-		//	{
-		//		using (IDbConnection dbConnection = Connection)
-		//		{
-		//			dbConnection.Open();
-		//			var result = await dbConnection.QueryAsync<UserTINModel>("SW_usp_GetTINListByEntityId", new { Entity_ID = entity_ID },
-		//				commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-		//			dbConnection.Close();
-		//			return result.ToList();
-		//		}
-		//	}
-		//	catch (Exception ex)
-		//	{
-		//		throw ex;
-		//	}
-		//	finally
-		//	{
+            }
+        }
+        public async Task<List<UserTINModel>> GetUserTinDetails(Guid user_UID)
+        {
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var result = await dbConnection.QueryAsync<UserTINModel>("SW_usp_GetUserTinList", new { User_UID = user_UID },
+                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                    dbConnection.Close();
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
 
-		//	}
-		//}
-	}
+            }
+        }
+    }
 }
