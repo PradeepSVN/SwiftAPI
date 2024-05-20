@@ -110,8 +110,9 @@ namespace Swift.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails",
-                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_ID = '0' },
+
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
                     return result.ToList();
                 }
