@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Swift.Core.Interfaces
+namespace Swift.Data.Interfaces
 {
 	public interface IRoleService
 	{

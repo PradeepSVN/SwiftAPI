@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Swift.Core.Interfaces;
+using Swift.Data.Interfaces;
 using Swift.Core.Models;
 using System.Reflection;
 using System.Security.Cryptography;
 using Swift.AES;
 using System.Text;
-using Swift.Services;
 using Swift.Api.ApiResponseHandler;
 using System.Net;
 using System.Xml.Linq;

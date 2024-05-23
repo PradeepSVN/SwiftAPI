@@ -3,12 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Swift.AES;
 using Swift.Api.ApiResponseHandler;
 using Swift.Core;
-using Swift.Core.Interfaces;
+using Swift.Data.Interfaces;
 
 
 //using Swift.Services.Interfaces;
 using Swift.Core.Models;
-using Swift.Services;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
