@@ -7,6 +7,9 @@ using Swift.AES;
 using System.Text;
 using Swift.Services;
 using System.Text.RegularExpressions;
+using Swift.Api.ApiResponseHandler;
+using Swift.Core;
+using System.Net;
 namespace Swift.Api.Controllers
 {
 	[ApiController]
@@ -28,11 +31,11 @@ namespace Swift.Api.Controllers
 			try
 			{
                 userModelList = await _userService.GetAllUserDetails();
-                return Ok(userModelList);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Users Data Retrived Successfully.", userModelList, null));
 			}
-			catch
+			catch(Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 
 		}
@@ -41,39 +44,49 @@ namespace Swift.Api.Controllers
 
 		public async Task<IActionResult> AddUser(UserModel userModel)
 		{
-			var addResult = false;
-			if (ModelState.IsValid)
+			try
 			{
-				try
+				var addResult = false;
+				if (ModelState.IsValid)
 				{
 					userModel.User_Password = Generate(8);
-					var result = await _userService.ValidateUserByUserName(userModel.User_ID,userModel.User_UserName);
-					if(result)
+					var result = await _userService.ValidateUserByUserName(userModel.User_ID, userModel.User_UserName);
+					if (result)
 					{
 						using (Aes myAes = Aes.Create())
-                        {
-                            myAes.Key = Encoding.UTF8.GetBytes(_configuration["SwiftSaltKey:Key"]);
-                            byte[] iv = new byte[16];
-                            myAes.IV = iv;
-                            // Encrypt the string to an array of bytes.
-                            userModel.User_Password = EncryptionHelper.EncryptStringToBytes_Aes(userModel.User_Password, myAes.Key, myAes.IV);
-                            // Decrypt the bytes to a string.
-                            //string roundtrip = EncryptionHelper.DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
-                        }
-                        addResult = await _userService.CreateUser(userModel);
+						{
+							myAes.Key = Encoding.UTF8.GetBytes(_configuration["SwiftSaltKey:Key"]);
+							byte[] iv = new byte[16];
+							myAes.IV = iv;
+							// Encrypt the string to an array of bytes.
+							userModel.User_Password = EncryptionHelper.EncryptStringToBytes_Aes(userModel.User_Password, myAes.Key, myAes.IV);
+							// Decrypt the bytes to a string.
+							//string roundtrip = EncryptionHelper.DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
+						}
+						addResult = await _userService.CreateUser(userModel);
+						if (addResult)
+						{
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Created Successfully.", null, null));
+						}else
+						{
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "User Creation Failed.", null, null));
+						}
 					}
-					return Ok(addResult);
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "User Already Exists.Please Check.", null, null));
+					}
+
 				}
-				catch
+				else
 				{
-					return BadRequest();
+					return BadRequest(new ApiResponse(Convert.ToInt32(HttpStatusCode.BadRequest), APIStatus.Failed.ToString(), "Enter Valid Credentials.", null, null));
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
-			
 		}
 		private readonly static Random _rand = new Random();
 
@@ -120,11 +133,11 @@ namespace Swift.Api.Controllers
 			try
 			{
 				var userModel = await _userService.EditUserDetailsById(user_ID);
-				return Ok(userModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Edit Successfully.", userModel, null));
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 
@@ -139,12 +152,22 @@ namespace Swift.Api.Controllers
 				if (result)
 				{
 					updateResult = await _userService.UpdateUserDetailsById(User_ID, userModel);
+					if (updateResult)
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Updated Successfully.", null, null));
+					}
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "User Update Failed.", null, null));
+					}
+				}else
+				{
+					return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "User Name Already Exists", null, null));
 				}
-				return Ok(updateResult);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 
@@ -156,9 +179,9 @@ namespace Swift.Api.Controllers
 			{
 				return Ok();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 
@@ -169,12 +192,12 @@ namespace Swift.Api.Controllers
 			// UserModel userModel = new UserModel();
 			try
 			{
-				var userModel = await _userService.GetUserEntityDetails(user_UID);
-				return Ok(userModel);
+				var userEntity = await _userService.GetUserEntityDetails(user_UID);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Entity Details Retrived Successfully.", userEntity, null));
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 		// GET: Tin details
@@ -184,12 +207,12 @@ namespace Swift.Api.Controllers
 			// UserModel userModel = new UserModel();
 			try
 			{
-				var userModel = await _userService.GetUserTinDetails(user_UID);
-				return Ok(userModel);
+				var userTin = await _userService.GetUserTinDetails(user_UID);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Tin Details Retrived Successfully.", userTin, null));
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 	}

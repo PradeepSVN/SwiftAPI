@@ -2,14 +2,17 @@
 using Microsoft.IdentityModel.Tokens;
 using Swift.AES;
 using Swift.Api.ApiResponseHandler;
+using Swift.Core;
 using Swift.Core.Interfaces;
 using Swift.Core.Models;
 using Swift.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Swift.Api.Controllers
 {
@@ -28,45 +31,49 @@ namespace Swift.Api.Controllers
 		[HttpPost(Name = "Login")]
 		public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
 		{
-			if (ModelState.IsValid)
+			try
 			{
-				try
-                {
-                    IActionResult response = Unauthorized();
-                    using (Aes myAes = Aes.Create())
-					{						
-                        myAes.Key = Encoding.UTF8.GetBytes(_configuration["SwiftSaltKey:Key"]);
-                        byte[] iv = new byte[16];
-                        myAes.IV = iv;
-                        // Encrypt the string to an array of bytes.
-                        loginModel.Password = EncryptionHelper.EncryptStringToBytes_Aes(loginModel.Password, myAes.Key, myAes.IV);
-                        // Decrypt the bytes to a string.
-                        //string roundtrip = EncryptionHelper.DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
+				if (ModelState.IsValid)
+				{
+					IActionResult response = Unauthorized();
+					using (Aes myAes = Aes.Create())
+					{
+						myAes.Key = Encoding.UTF8.GetBytes(_configuration["SwiftSaltKey:Key"]);
+						byte[] iv = new byte[16];
+						myAes.IV = iv;
+						// Encrypt the string to an array of bytes.
+						loginModel.Password = EncryptionHelper.EncryptStringToBytes_Aes(loginModel.Password, myAes.Key, myAes.IV);
+						// Decrypt the bytes to a string.
+						//string roundtrip = EncryptionHelper.DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
 
-                    }
-                    var status=await _loginService.Login(loginModel);
+					}
+					var status = await _loginService.Login(loginModel);
 					if (status)
 					{
 						var tokenString = GenerateJSONWebToken(loginModel);
 						var userModel = _loginService.GetLoginUserDetails(loginModel);
-
-						response = Ok(new { token = tokenString, userid = userModel.Result.User_UID }) ;
+						var myData = new
+						{
+							token = tokenString,
+							userid = userModel.Result.User_UID
+						};
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Login Success", myData, null));
 					}
-					string result = "", responseMessage = "";
-					return response;
-                    //return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), responseMessage, result));
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Invalid Credentials", null, null));
+					}
 
-                }
-				catch
+				}
+				else
 				{
-					return BadRequest();
+					return BadRequest(new ApiResponse(Convert.ToInt32(HttpStatusCode.BadRequest), APIStatus.Failed.ToString(), "Enter Valid Credentials.", null, null));
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
-			return Ok();
 		}
 		private string GenerateJSONWebToken(LoginModel loginInfo)
 		{
