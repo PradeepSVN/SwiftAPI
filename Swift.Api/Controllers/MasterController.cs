@@ -6,6 +6,10 @@ using System.Security.Cryptography;
 using Swift.AES;
 using System.Text;
 using Swift.Services;
+using Swift.Api.ApiResponseHandler;
+using System.Net;
+using System.Xml.Linq;
+using Swift.Core;
 namespace Swift.Api.Controllers
 {
 	[ApiController]
@@ -18,8 +22,7 @@ namespace Swift.Api.Controllers
 		{
 			_masterService = masterService;
 			_configuration = configuration;
-		}
-		
+		}		
 
 		// GET: Entity details
 		[HttpGet(Name = "GetEntityDetails")]
@@ -28,26 +31,25 @@ namespace Swift.Api.Controllers
 			try
 			{
 				var entityModel = await _masterService.GetEntityDetails();
-				return Ok(entityModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Entity Details Retrived Successfully.", entityModel, null));				
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 		// GET: Tin details
 		[HttpGet(Name = "GetTinDetails")]
 		public async Task<ActionResult> GetTinDetails(string entity_ID)
-		{
-			
+		{			
 			try
 			{
 				var tinModel = await _masterService.GetTinDetails(entity_ID);
-				return Ok(tinModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Tin Details Retrived Successfully.", tinModel, null));
 			}
-			catch
+			catch (Exception ex)
 			{
-				return BadRequest();
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
 	}

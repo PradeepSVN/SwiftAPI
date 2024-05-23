@@ -87,7 +87,7 @@ namespace Swift.Services
                     await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateRoleDetails", ObjParm, commandType: CommandType.StoredProcedure);
                     int result = ObjParm.Get<int>("@result");
                     dbConnection.Close();
-                    return result == 1 ? true : false;
+                     return result == 1 ? true : false;
                 }
             }
             catch (Exception ex)

@@ -48,7 +48,7 @@ namespace Swift.Services
             }
             catch (Exception ex)
             {
-                return false;
+				throw ex;
             }
             //var result = await _customerRepository.GetByIdAsync(customerId);
 

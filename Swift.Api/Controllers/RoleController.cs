@@ -1,13 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swift.AES;
+using Swift.Api.ApiResponseHandler;
+using Swift.Core;
 using Swift.Core.Interfaces;
 
 
 //using Swift.Services.Interfaces;
 using Swift.Core.Models;
 using Swift.Services;
+using System.Net;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Swift.Api.Controllers
 {
@@ -30,41 +34,50 @@ namespace Swift.Api.Controllers
             try
             {
                 roleModelList = await _roleService.GetAllRoleDetails();
-                return Ok(roleModelList);
-            }
-            catch
-            {
-                return BadRequest();
-            }           
-            
-        }
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Roles Data Retrived Successfully.", roleModelList, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
         // POST: Role/AddRole
         [HttpPost(Name = "AddRole")]		
 		public async Task<IActionResult> AddRole(RoleModel roleModel)
 		{
-
-            var addResult = false;
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var addResult = false;
+                if (ModelState.IsValid)
                 {
-					var result = await _roleService.ValidateRoleByRoleId(roleModel.Role_UID, roleModel.Role_ID);
-                    if (result)
-                    {
-                        addResult = await _roleService.CreateRole(roleModel);                       
-                    }
-					return Ok(addResult);
-				}
-                catch
-                {
-                    return BadRequest();
+                    var result = await _roleService.ValidateRoleByRoleId(roleModel.Role_UID, roleModel.Role_ID);
+					if (result)
+					{
+						addResult = await _roleService.CreateRole(roleModel);
+						if (addResult)
+						{
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Created Successfully.", null, null));
+						}
+						else
+						{
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Role Creation Failed.", null, null));
+						}
+					}
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Role Already Exists.Please Check.", null, null));
+					}
                 }
+                else
+                {
+					return BadRequest(new ApiResponse(Convert.ToInt32(HttpStatusCode.BadRequest), APIStatus.Failed.ToString(), "Enter Valid Credentials.", null, null));
+				}
             }
-            else
-            {
-                return BadRequest();
-            }
-        }
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 
 
 		// GET: Bind controls to Update details
@@ -75,13 +88,13 @@ namespace Swift.Api.Controllers
             try
             {
 				var roleModel = await _roleService.EditRoleDetailsById(role_UID);
-				return Ok(roleModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Edit Successfully.", roleModel, null));
 			}
-            catch
-            {
-                return BadRequest();
-            }
-        }
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditRoleDetails")]
@@ -94,14 +107,25 @@ namespace Swift.Api.Controllers
 				if (result)
 				{
 					 updateResult = await _roleService.UpdateRoleDetailsById(role_ID, roleModel);
-                }
-				return Ok(updateResult);
+					if (updateResult)
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Updated Successfully.", null, null));
+					}
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Role Update Failed.", null, null));
+					}
+				}
+				else
+				{
+					return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Role Id Already Exists", null, null));
+				}			
             }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 
 		// GET: Delete  Role details by id
 		[HttpDelete(Name = "DeleteRole")]
@@ -111,10 +135,10 @@ namespace Swift.Api.Controllers
             {
                 return Ok();
             }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
     }
 }
