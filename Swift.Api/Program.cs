@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Swift.Core.Interfaces;
-using Swift.Services;
+using Swift.Data.Interfaces;
+using Swift.Data.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

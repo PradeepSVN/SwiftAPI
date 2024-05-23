@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
-using Swift.Core.Interfaces;
+using Swift.Data.Interfaces;
 using Swift.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Swift.Services
+namespace Swift.Data.Services
 {
     public class UserService : IUserService
     {
@@ -112,7 +112,7 @@ namespace Swift.Services
                     dbConnection.Open();
                     var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_ID = '0' },
 
-						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
                     return result.ToList();
                 }
@@ -126,71 +126,71 @@ namespace Swift.Services
 
             }
         }
-		public async Task<UserModel> EditUserDetailsById(int user_ID)
-        { 
-			try
-			{
-				using (IDbConnection dbConnection = Connection)
-				{
-					dbConnection.Open();
-					var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_ID = user_ID },
-						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-					dbConnection.Close();
-					return result.SingleOrDefault();
-				}
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			finally
-			{
+        public async Task<UserModel> EditUserDetailsById(int user_ID)
+        {
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    dbConnection.Open();
+                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_ID = user_ID },
+                        commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+                    dbConnection.Close();
+                    return result.SingleOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
 
-			}
-		}
-		public async Task<bool> UpdateUserDetailsById(int user_ID, UserModel userModel)
-		{
-			try
-			{
-				using (IDbConnection dbConnection = Connection)
-				{
-					DynamicParameters ObjParm = new DynamicParameters();
-					ObjParm.Add("@User_ID", user_ID);
-					ObjParm.Add("@User_Prac_Admin", userModel.User_Prac_Admin);
-					ObjParm.Add("@User_First_Name", userModel.User_First_Name);
-					ObjParm.Add("@User_Last_Name", userModel.User_Last_Name);
-					ObjParm.Add("@User_Title", userModel.User_Title);
-					ObjParm.Add("@User_Email", userModel.User_Email);
-					ObjParm.Add("@User_Phone", userModel.User_Phone);
-					ObjParm.Add("@User_Phone_Extn", userModel.User_Phone_Extn);
-					ObjParm.Add("@User_Fax", userModel.User_Fax);
-					ObjParm.Add("@User_Active", userModel.User_Active);
-					ObjParm.Add("@User_Temp_Disable", userModel.User_Temp_Disable);
-					ObjParm.Add("@User_Change_Password", userModel.User_Change_Password);
-					//ObjParm.Add("@User_Password_Changed_Date", userModel.User_Password_Changed_Date);
-					ObjParm.Add("@User_Note", userModel.User_Note);
-					ObjParm.Add("@User_UserName", userModel.User_UserName);
-					ObjParm.Add("@User_Password", userModel.User_Password);
-					ObjParm.Add("@User_Terminated", userModel.User_Terminated);
-					ObjParm.Add("@User_Terminated_Date", userModel.User_Terminated_Date);
-					ObjParm.Add("@Created_By_User_UID", userModel.Created_By_User_UID);
-					ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
-					dbConnection.Open();
-					await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateRoleDetails", ObjParm, commandType: CommandType.StoredProcedure);
-					int result = ObjParm.Get<int>("@result");
-					dbConnection.Close();
-					return result == 1 ? true : false;
-				}
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-			finally
-			{
+            }
+        }
+        public async Task<bool> UpdateUserDetailsById(int user_ID, UserModel userModel)
+        {
+            try
+            {
+                using (IDbConnection dbConnection = Connection)
+                {
+                    DynamicParameters ObjParm = new DynamicParameters();
+                    ObjParm.Add("@User_ID", user_ID);
+                    ObjParm.Add("@User_Prac_Admin", userModel.User_Prac_Admin);
+                    ObjParm.Add("@User_First_Name", userModel.User_First_Name);
+                    ObjParm.Add("@User_Last_Name", userModel.User_Last_Name);
+                    ObjParm.Add("@User_Title", userModel.User_Title);
+                    ObjParm.Add("@User_Email", userModel.User_Email);
+                    ObjParm.Add("@User_Phone", userModel.User_Phone);
+                    ObjParm.Add("@User_Phone_Extn", userModel.User_Phone_Extn);
+                    ObjParm.Add("@User_Fax", userModel.User_Fax);
+                    ObjParm.Add("@User_Active", userModel.User_Active);
+                    ObjParm.Add("@User_Temp_Disable", userModel.User_Temp_Disable);
+                    ObjParm.Add("@User_Change_Password", userModel.User_Change_Password);
+                    //ObjParm.Add("@User_Password_Changed_Date", userModel.User_Password_Changed_Date);
+                    ObjParm.Add("@User_Note", userModel.User_Note);
+                    ObjParm.Add("@User_UserName", userModel.User_UserName);
+                    ObjParm.Add("@User_Password", userModel.User_Password);
+                    ObjParm.Add("@User_Terminated", userModel.User_Terminated);
+                    ObjParm.Add("@User_Terminated_Date", userModel.User_Terminated_Date);
+                    ObjParm.Add("@Created_By_User_UID", userModel.Created_By_User_UID);
+                    ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
+                    dbConnection.Open();
+                    await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateRoleDetails", ObjParm, commandType: CommandType.StoredProcedure);
+                    int result = ObjParm.Get<int>("@result");
+                    dbConnection.Close();
+                    return result == 1 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
 
-			}
-		}
+            }
+        }
         public async Task<List<UserEntitieModel>> GetUserEntityDetails(Guid user_UID)
         {
             try
@@ -208,7 +208,7 @@ namespace Swift.Services
             {
                 throw ex;
             }
-            finally 
+            finally
             {
 
             }

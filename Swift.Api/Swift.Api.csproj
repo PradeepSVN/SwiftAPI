@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Swift.AES\Swift.AES.csproj" />
     <ProjectReference Include="..\Swift.Core\Swift.Core.csproj" />
-    <ProjectReference Include="..\Swift.Services\Swift.Services.csproj" />
+    <ProjectReference Include="..\Swift.Services\Swift.Data.csproj" />
   </ItemGroup>
 
 </Project>

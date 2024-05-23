@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swift.Core", "Swift.Core\Sw
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swift.AES", "Swift.AES\Swift.AES.csproj", "{16C3C2C4-A986-4D33-96D4-EE814EB2EC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swift.Services", "Swift.Services\Swift.Services.csproj", "{22FAB688-8954-49F6-8443-3E02FA6FDFEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Swift.Data", "Swift.Services\Swift.Data.csproj", "{22FAB688-8954-49F6-8443-3E02FA6FDFEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
