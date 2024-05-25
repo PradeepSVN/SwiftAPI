@@ -46,9 +46,21 @@ namespace Swift.Core.Models
 		public bool User_Terminated { get; set; }
 		public DateTime User_Terminated_Date { get; set; }
 		public Guid Role_UID { get; set; }
+		public string Role_Name { get; set; }
 		public string Entities { get; set; }
 		public string TINs { get; set; }
 	}
+	public class UserSearchModel
+	{
+        public string User_UserName { get; set; }
+        public string User_First_Name { get; set; }
+        public string User_Last_Name { get; set; }
+        public string Role { get; set; }
+        public string User_Prac_Admin { get; set; }
+        public string User_Active { get; set; }
+        public string User_Entities { get; set; }
+        public string User_Tins { get; set; }
+    }
 	public class UserEntitieModel
 	{
 		public string Entity_ID { get; set; }

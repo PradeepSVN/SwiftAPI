@@ -36,7 +36,20 @@ namespace Swift.Api.Controllers
 			{
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
-
+		}
+		[HttpPost(Name = "GetAllUserDetailsBySearch")]
+		public async Task<IActionResult> GetAllUserDetailsBySearch(UserSearchModel userSearchModel)
+		{
+			List<UserModel> userModelList = new List<UserModel>();
+			try
+			{
+				userModelList = await _userService.GetAllUserDetailsBySearch(userSearchModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Users Data Retrived Successfully By Search.", userModelList, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
 		}
 		// POST: User/AddUser
 		[HttpPost(Name = "AddUser")]
@@ -49,7 +62,7 @@ namespace Swift.Api.Controllers
 				if (ModelState.IsValid)
 				{
 					userModel.User_Password = Generate(8);
-					var result = await _userService.ValidateUserByUserName(userModel.User_ID, userModel.User_UserName);
+					var result = await _userService.ValidateUserByUserName(userModel.User_UID, userModel.User_UserName);
 					if (result)
 					{
 						using (Aes myAes = Aes.Create())
@@ -126,12 +139,12 @@ namespace Swift.Api.Controllers
 		}
 		// GET: Bind controls to Update details
 		[HttpGet(Name = "EditUserDetails")]
-		public async Task<ActionResult> EditUserDetails(int user_ID)
+		public async Task<ActionResult> EditUserDetails(Guid user_UID)
 		{
 			// UserModel userModel = new UserModel();
 			try
 			{
-				var userModel = await _userService.EditUserDetailsById(user_ID);
+				var userModel = await _userService.EditUserDetailsById(user_UID);
 				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Edit Successfully.", userModel, null));
 			}
 			catch (Exception ex)
@@ -142,15 +155,15 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditUserDetails")]
-		public async Task<ActionResult> EditUserDetails(int User_ID, UserModel userModel)
+		public async Task<ActionResult> EditUserDetails(Guid user_UID, UserModel userModel)
 		{
 			try
 			{
 				var updateResult = false;
-				var result = await _userService.ValidateUserByUserName(User_ID, userModel.User_UserName);
+				var result = await _userService.ValidateUserByUserName(user_UID, userModel.User_UserName);
 				if (result)
 				{
-					updateResult = await _userService.UpdateUserDetailsById(User_ID, userModel);
+					updateResult = await _userService.UpdateUserDetailsById(user_UID, userModel);
 					if (updateResult)
 					{
 						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Updated Successfully.", null, null));
@@ -169,10 +182,24 @@ namespace Swift.Api.Controllers
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
-
+		// GET: Bind controls to Update details
+		[HttpGet(Name = "UserViewDetailsByUId")]
+		public async Task<ActionResult> UserViewDetailsByUId(Guid user_UID)
+		{
+			// UserModel userModel = new UserModel();
+			try
+			{
+				var userModel = await _userService.UserViewDetailsByUId(user_UID);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Edit Successfully.", userModel, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 		// GET: Delete  User details by id
 		[HttpDelete(Name = "DeleteUser")]
-		public ActionResult DeleteUser(int id)
+		public ActionResult DeleteUser(Guid user_UID)
 		{
 			try
 			{
