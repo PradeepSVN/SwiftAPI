@@ -31,14 +31,14 @@ namespace Swift.Data.Services
         }
         #endregion
 
-        public async Task<bool> ValidateUserByUserName(int? userId, string userName)
+        public async Task<bool> ValidateUserByUserName(Guid user_UID, string userName)
         {
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     DynamicParameters ObjParm = new DynamicParameters();
-                    ObjParm.Add("@UserId", userId);
+                    ObjParm.Add("@user_UID", user_UID);
                     ObjParm.Add("@UserName", userName);
                     ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
                     dbConnection.Open();
@@ -126,14 +126,47 @@ namespace Swift.Data.Services
 
             }
         }
-        public async Task<UserModel> EditUserDetailsById(int user_ID)
+		public async Task<List<UserModel>> GetAllUserDetailsBySearch(UserSearchModel userSearchModel)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					DynamicParameters ObjParm = new DynamicParameters();
+					ObjParm.Add("@User_UserName", userSearchModel.User_UserName);
+					ObjParm.Add("@User_First_Name", userSearchModel.User_First_Name);
+					ObjParm.Add("@User_Last_Name", userSearchModel.User_Last_Name);
+					ObjParm.Add("@Role", userSearchModel.Role);
+					ObjParm.Add("@User_Prac_Admin", userSearchModel.User_Prac_Admin);
+					ObjParm.Add("@User_Active", userSearchModel.User_Active);
+					ObjParm.Add("@User_Entities", userSearchModel.User_Entities);
+					ObjParm.Add("@User_Tins", userSearchModel.User_Tins);
+					
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetAllUserDetailsBySearch", ObjParm,
+
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+		public async Task<UserModel> EditUserDetailsById(Guid user_UID)
         {
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_ID = user_ID },
+                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_UID = user_UID },
                         commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
                     return result.SingleOrDefault();
@@ -148,14 +181,15 @@ namespace Swift.Data.Services
 
             }
         }
-        public async Task<bool> UpdateUserDetailsById(int user_ID, UserModel userModel)
+        public async Task<bool> UpdateUserDetailsById(Guid user_UID, UserModel userModel)
         {
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     DynamicParameters ObjParm = new DynamicParameters();
-                    ObjParm.Add("@User_ID", user_ID);
+                    ObjParm.Add("@User_UID", user_UID);
+                    ObjParm.Add("@User_ID", userModel.User_ID);
                     ObjParm.Add("@User_Prac_Admin", userModel.User_Prac_Admin);
                     ObjParm.Add("@User_First_Name", userModel.User_First_Name);
                     ObjParm.Add("@User_Last_Name", userModel.User_Last_Name);
@@ -174,9 +208,12 @@ namespace Swift.Data.Services
                     ObjParm.Add("@User_Terminated", userModel.User_Terminated);
                     ObjParm.Add("@User_Terminated_Date", userModel.User_Terminated_Date);
                     ObjParm.Add("@Created_By_User_UID", userModel.Created_By_User_UID);
+                    ObjParm.Add("@Role_UID", userModel.Role_UID);
+                    ObjParm.Add("@Entities", userModel.Entities);
+                    ObjParm.Add("@TINs", userModel.TINs);
                     ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
                     dbConnection.Open();
-                    await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateRoleDetails", ObjParm, commandType: CommandType.StoredProcedure);
+                    await dbConnection.ExecuteAsync("SW_usp_InsertOrUpdateUserDetails", ObjParm, commandType: CommandType.StoredProcedure);
                     int result = ObjParm.Get<int>("@result");
                     dbConnection.Close();
                     return result == 1 ? true : false;
@@ -191,7 +228,29 @@ namespace Swift.Data.Services
 
             }
         }
-        public async Task<List<UserEntitieModel>> GetUserEntityDetails(Guid user_UID)
+		public async Task<UserModel> UserViewDetailsByUId(Guid user_UID)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserViewDetails", new { User_UID = user_UID },
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.SingleOrDefault();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+		public async Task<List<UserEntitieModel>> GetUserEntityDetails(Guid user_UID)
         {
             try
             {
