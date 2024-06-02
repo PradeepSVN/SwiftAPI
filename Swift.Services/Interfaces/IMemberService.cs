@@ -10,6 +10,6 @@ namespace Swift.Data.Interfaces
 	public interface IMemberService
 	{
         Task <List<MemberSearchDetailsModel>> GetAllMemberDetailsBySearch(MemberSearchModel memberSearchModel);
-		
+		Task<MemberInfoModel> EditMemberDetailsById(string memberId);
 	}
 }

@@ -31,5 +31,19 @@ namespace Swift.Api.Controllers
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
+		[HttpGet(Name = "EditMemberDetails")]
+		public async Task<ActionResult> EditMemberDetails(string memberId)
+		{
+			// UserModel userModel = new UserModel();
+			try
+			{
+				var memberInfoModel = await _memberService.EditMemberDetailsById(memberId);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Member Edit Successfully.", memberInfoModel, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 	}
 }

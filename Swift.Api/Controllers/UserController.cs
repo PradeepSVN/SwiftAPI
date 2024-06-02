@@ -145,7 +145,7 @@ namespace Swift.Api.Controllers
 			try
 			{
 				var userModel = await _userService.EditUserDetailsById(user_UID);
-				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Edit Successfully.", userModel, null));
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Edit Successfully.", userModel, null));
 			}
 			catch (Exception ex)
 			{

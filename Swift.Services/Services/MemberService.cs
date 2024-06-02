@@ -70,6 +70,28 @@ namespace Swift.Data.Services
 
 			}
 		}
-		
-    }
+		public async Task<MemberInfoModel> EditMemberDetailsById(string memberId)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<MemberInfoModel>("SW_usp_GetMemberDetailsById", new { MemberId = memberId },
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.SingleOrDefault();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+
+	}
 }
