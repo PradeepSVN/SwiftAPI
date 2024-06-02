@@ -54,7 +54,8 @@ namespace Swift.Api.Controllers
 						var myData = new
 						{
 							token = tokenString,
-							userid = userModel.Result.User_UID
+							userid = userModel.Result.User_UID,
+							role_UID=userModel.Result.Role_UID
 						};
 						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Login Success", myData, null));
 					}

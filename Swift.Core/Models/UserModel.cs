@@ -46,7 +46,7 @@ namespace Swift.Core.Models
 		public bool User_Terminated { get; set; }
 		public DateTime User_Terminated_Date { get; set; }
 		public Guid Role_UID { get; set; }
-		public string Role_Name { get; set; }
+		public string? Role_Name { get; set; }
 		public string Entities { get; set; }
 		public string TINs { get; set; }
 	}
