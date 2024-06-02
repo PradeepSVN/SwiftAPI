@@ -73,4 +73,5 @@ namespace Swift.Core.Models
 		public string TIN_Name { get; set; }
 
 	}
+
 }
