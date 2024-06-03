@@ -41,6 +41,7 @@ builder.Services.AddCors(options =>
 		{
 
 			builder.WithOrigins("http://localhost:3001")
+			//builder.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com:81")
 				.AllowAnyHeader()
 				.AllowAnyMethod();
 		});
@@ -55,14 +56,14 @@ builder.Services.AddScoped<IMemberService, MemberService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//	app.UseSwagger();
+//	app.UseSwaggerUI();
+//}
 
-//app.UseSwagger();
-//app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

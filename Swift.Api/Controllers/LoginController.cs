@@ -12,11 +12,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
+
 	public class LoginController : Controller
 	{
 		public IConfiguration _configuration;
