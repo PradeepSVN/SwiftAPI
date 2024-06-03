@@ -63,6 +63,7 @@ namespace Swift.Core.Models
 		public string FIRSTNAME { get; set; }
 		public string LASTNAME { get; set; }
 		public string DOB { get; set; }
+		public string TotalCount { get; set; }
 
 	}
 	public class MemberInfoModel
@@ -102,5 +103,11 @@ namespace Swift.Core.Models
 		public string PROVIDER_PHONE_EXT { get; set; }
 		public string PROVIDER_FAX { get; set; }
 		public string PROVIDER_EMAIL { get; set; }
+		public string TIN_NAME { get; set; }
+		public string MEMBERSTATUS { get; set; }
+		public string INSURANCE_DESCRIPTION { get; set; }
+		public string MEMBER_RELATIONSHIP { get; set; }
+		public string OPTION_CLIENT_ID { get; set; }
+		public string AGE { get; set; }
 	}
 }
