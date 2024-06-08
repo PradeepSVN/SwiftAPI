@@ -181,14 +181,14 @@ namespace Swift.Data.Services
 
             }
         }
-        public async Task<bool> UpdateUserDetailsById(Guid user_UID, UserModel userModel)
+        public async Task<bool> UpdateUserDetailsById(UserModel userModel)
         {
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     DynamicParameters ObjParm = new DynamicParameters();
-                    ObjParm.Add("@User_UID", user_UID);
+                    ObjParm.Add("@User_UID", userModel.User_UID);
                     ObjParm.Add("@User_ID", userModel.User_ID);
                     ObjParm.Add("@User_Prac_Admin", userModel.User_Prac_Admin);
                     ObjParm.Add("@User_First_Name", userModel.User_First_Name);
