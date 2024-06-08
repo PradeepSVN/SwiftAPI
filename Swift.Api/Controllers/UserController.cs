@@ -157,15 +157,15 @@ namespace Swift.Api.Controllers
 
 		// POST:Update the details into database
 		[HttpPost(Name = "EditUserDetails")]
-		public async Task<ActionResult> EditUserDetails(Guid user_UID, UserModel userModel)
+		public async Task<ActionResult> EditUserDetails(UserModel userModel)
 		{
 			try
 			{
 				var updateResult = false;
-				var result = await _userService.ValidateUserByUserName(user_UID, userModel.User_UserName);
+				var result = await _userService.ValidateUserByUserName(userModel.User_UID, userModel.User_UserName);
 				if (result)
 				{
-					updateResult = await _userService.UpdateUserDetailsById(user_UID, userModel);
+					updateResult = await _userService.UpdateUserDetailsById(userModel);
 					if (updateResult)
 					{
 						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "User Updated Successfully.", null, null));
