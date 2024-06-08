@@ -35,5 +35,10 @@ namespace Swift.Core.Models
 		public string Role_ID { get; set; }
 		public string Role_Name { get; set; }
 		public string Prac_Admin_Assignable { get; set; }
-	}
+        public string Member { get; set; }
+        public string Provider { get; set; }
+        public string Authorization { get; set; }
+        public string Claims { get; set; }
+        public string Finance { get; set; }
+    }
 }

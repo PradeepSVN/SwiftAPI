@@ -197,6 +197,11 @@ namespace Swift.Data.Services
 					ObjParm.Add("@Role_ID", roleSearchModel.Role_ID);
 					ObjParm.Add("@Role_Name", roleSearchModel.Role_Name);
 					ObjParm.Add("@Prac_Admin_Assignable", roleSearchModel.Prac_Admin_Assignable);
+					ObjParm.Add("@Member", roleSearchModel.Member);
+					ObjParm.Add("@Provider", roleSearchModel.Provider);
+					ObjParm.Add("@Authorization", roleSearchModel.Authorization);
+					ObjParm.Add("@Claims", roleSearchModel.Claims);
+					ObjParm.Add("@Finance", roleSearchModel.Finance);
 					dbConnection.Open();
 					var result = await dbConnection.QueryAsync<RoleModel>("SW_usp_GetRoleDetailsBySearch", ObjParm,
 						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
