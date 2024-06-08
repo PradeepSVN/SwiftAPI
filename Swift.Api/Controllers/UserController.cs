@@ -58,9 +58,11 @@ namespace Swift.Api.Controllers
 		{
 			try
 			{
+				
 				var addResult = false;
 				if (ModelState.IsValid)
 				{
+					
 					userModel.User_Password = Generate(8);
 					var result = await _userService.ValidateUserByUserName(userModel.User_UID, userModel.User_UserName);
 					if (result)

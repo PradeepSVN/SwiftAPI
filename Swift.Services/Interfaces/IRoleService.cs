@@ -14,5 +14,6 @@ namespace Swift.Data.Interfaces
 		Task<List<RoleModel>> GetAllRoleDetails();
 		Task<RoleModel> EditRoleDetailsById(Guid role_UID);
 		Task<bool> UpdateRoleDetailsById(string role_ID, RoleModel roleModel);
+		Task<List<RoleModel>> GetAllRoleDetailsBySearch(RoleSearchModel roleSearchModel);
 	}
 }

@@ -70,6 +70,7 @@ namespace Swift.Core.Models
 	{
 		public Guid MEMBER_UID { get; set; }
 		public string MEMBER_CLIENT_ID { get; set; }
+		public string ENTITY_DESCRIPTION { get; set; }
 		public string MEMBER_DOB { get; set; }
 		public string MEMBER_Age { get; set; }
 		public string MEMBER_FULLNAME { get; set; }
@@ -108,6 +109,6 @@ namespace Swift.Core.Models
 		public string INSURANCE_DESCRIPTION { get; set; }
 		public string MEMBER_RELATIONSHIP { get; set; }
 		public string OPTION_CLIENT_ID { get; set; }
-		public string AGE { get; set; }
+		
 	}
 }

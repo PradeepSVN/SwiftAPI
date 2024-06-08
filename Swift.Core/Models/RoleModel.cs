@@ -30,4 +30,10 @@ namespace Swift.Core.Models
         public DateTime Updated_Date { get; set; }
 
     }
+    public class RoleSearchModel
+    {
+		public string Role_ID { get; set; }
+		public string Role_Name { get; set; }
+		public string Prac_Admin_Assignable { get; set; }
+	}
 }
