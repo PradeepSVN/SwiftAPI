@@ -42,6 +42,7 @@ builder.Services.AddCors(options =>
 
 			builder.WithOrigins("http://localhost:3001")
 			//builder.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com:81")
+			//builder.WithOrigins("http://172.203.66.19:81/")
 				.AllowAnyHeader()
 				.AllowAnyMethod();
 		});

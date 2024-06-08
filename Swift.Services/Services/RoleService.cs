@@ -187,6 +187,32 @@ namespace Swift.Data.Services
 
             }
         }
-    }
+		public async Task<List<RoleModel>> GetAllRoleDetailsBySearch(RoleSearchModel roleSearchModel)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					DynamicParameters ObjParm = new DynamicParameters();
+					ObjParm.Add("@Role_ID", roleSearchModel.Role_ID);
+					ObjParm.Add("@Role_Name", roleSearchModel.Role_Name);
+					ObjParm.Add("@Prac_Admin_Assignable", roleSearchModel.Prac_Admin_Assignable);
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<RoleModel>("SW_usp_GetRoleDetailsBySearch", ObjParm,
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+	}
 
 }

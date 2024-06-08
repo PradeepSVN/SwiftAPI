@@ -51,11 +51,9 @@ namespace Swift.Data.Services
 					ObjParm.Add("@size", memberSearchModel.Size);
 					ObjParm.Add("@sortColumn", memberSearchModel.SortColumn);
 					ObjParm.Add("@Order", memberSearchModel.Order);
-					ObjParm.Add("@totalrows", memberSearchModel.Totalrows);
-					
+					ObjParm.Add("@totalrows", memberSearchModel.Totalrows);					
 					dbConnection.Open();
 					var result = await dbConnection.QueryAsync<MemberSearchDetailsModel>("SW_usp_GetAllMemberDetailsBySearch", ObjParm,
-
 						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
 					dbConnection.Close();
 					return result.ToList();

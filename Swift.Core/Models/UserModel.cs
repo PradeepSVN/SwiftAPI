@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Swift.Core.Models
@@ -44,7 +45,9 @@ namespace Swift.Core.Models
 	
 		public  string User_Password { get; set; }
 		public bool User_Terminated { get; set; }
-		public DateTime User_Terminated_Date { get; set; }
+
+		//[JsonProperty("User_Terminated_Date", NullValueHandling = NullValueHandling.Ignore)]
+		public string User_Terminated_Date { get; set; }
 		public Guid Role_UID { get; set; }
 		public string? Role_Name { get; set; }
 		public string Entities { get; set; }

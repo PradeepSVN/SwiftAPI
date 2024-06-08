@@ -11,6 +11,7 @@ using Swift.Core.Models;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
+using Swift.Data.Services;
 
 namespace Swift.Api.Controllers
 {
@@ -139,5 +140,19 @@ namespace Swift.Api.Controllers
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
-    }
+		[HttpPost(Name = "GetAllRoleDetailsBySearch")]
+		public async Task<IActionResult> GetAllRoleDetailsBySearch(RoleSearchModel roleSearchModel)
+		{
+			List<RoleModel> roleListModel = new List<RoleModel>();
+			try
+			{
+				roleListModel = await _roleService.GetAllRoleDetailsBySearch(roleSearchModel);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Role Data Retrived Successfully By Search.", roleListModel, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
+	}
 }
