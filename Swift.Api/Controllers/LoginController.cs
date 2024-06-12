@@ -18,7 +18,7 @@ namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
-
+	
 	public class LoginController : Controller
 	{
 		public IConfiguration _configuration;

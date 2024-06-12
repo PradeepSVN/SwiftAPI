@@ -9,10 +9,12 @@ using System.Text.RegularExpressions;
 using Swift.Api.ApiResponseHandler;
 using Swift.Core;
 using System.Net;
+using Microsoft.AspNetCore.Cors;
 namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
+	
 	public class UserController : Controller
 	{
 		private readonly IUserService _userService;

@@ -12,11 +12,13 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Swift.Data.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
+
 	public class RoleController : Controller
 	{
 

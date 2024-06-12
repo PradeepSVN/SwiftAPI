@@ -9,10 +9,12 @@ using Swift.Api.ApiResponseHandler;
 using System.Net;
 using System.Xml.Linq;
 using Swift.Core;
+using Microsoft.AspNetCore.Cors;
 namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
+	
 	public class MasterController : Controller
 	{
 		private readonly IMasterService _masterService;

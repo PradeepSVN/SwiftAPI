@@ -1,26 +1,29 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Swift.Data.Interfaces;
 using Swift.Data.Services;
 using System.Text;
 
+var MyAllowSpecificOrigins = "AllowSpecificOrigin";
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("CorsPolicy",
+		builder => builder			
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.SetIsOriginAllowed(origin=>true)
+			.AllowCredentials());
+});
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-//builder.Services.AddCors(options =>
-//{
-//	options.AddPolicy(name: "AllowOrigin",
-//		builder =>
-//		{
-//			builder.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com", "https://vmswifthcdev1.eastus2.cloudapp.azure.com", "http://localhost:8081")
-//								.AllowAnyHeader()
-//								.AllowAnyMethod();
-//		});
-//});
+
 //JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
 	options.TokenValidationParameters = new TokenValidationParameters
@@ -34,19 +37,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
 	};
 });
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy("AllowReact",
-		builder =>
-		{
+//builder.Services.AddCors(options =>
+//{
+//	options.AddPolicy("AllowReact",
+//		builder =>
+//		{
 
-			builder.WithOrigins("http://localhost:3001")
-			//builder.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com:81")
-			//builder.WithOrigins("http://172.203.66.19:81/")
-				.AllowAnyHeader()
-				.AllowAnyMethod();
-		});
-});
+//			builder.WithOrigins("http://localhost:3001")
+//				//builder.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com:81")
+//				//builder.WithOrigins("http://172.203.66.19:81/")
+//				.AllowAnyHeader()
+//				.AllowAnyMethod();
+//		});
+//});
+
+//builder.Services.AddCors(options =>
+//{
+//	options.AddPolicy(name: MyAllowSpecificOrigins,
+//					  policy =>
+//					  {
+//						  //policy.WithOrigins("http://172.203.66.19:81/");
+//						  policy.WithOrigins("http://172.203.66.19:81/");
+//					  });
+//});
 
 
 builder.Services.AddScoped<ILoginService, LoginService>();
@@ -54,6 +67,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IMasterService, MasterService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
+builder.Services.AddScoped<IProviderService, ProviderService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -66,11 +80,14 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+//app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("CorsPolicy");
+//app.UseCors("AllowReact");
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseCors("AllowReact");
+
 //app.UseCors();
 app.Run();
