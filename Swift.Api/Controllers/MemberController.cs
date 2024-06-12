@@ -5,11 +5,13 @@ using Swift.Core;
 using System.Net;
 using Swift.Data.Interfaces;
 using Swift.Data.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace Swift.Api.Controllers
 {
 	[ApiController]
 	[Route("[controller]/[action]")]
+	
 	public class MemberController : Controller
 	{
 		private readonly IMemberService _memberService;
