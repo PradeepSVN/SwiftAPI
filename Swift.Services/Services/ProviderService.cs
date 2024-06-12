@@ -18,7 +18,7 @@ namespace Swift.Data.Services
         #region Connection String
 
         public IConfiguration _configuration;
-        public MemberService(IConfiguration configuration)
+        public ProviderService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
