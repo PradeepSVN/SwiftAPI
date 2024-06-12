@@ -63,7 +63,7 @@ namespace Swift.Core.Models
 	}
 	public class ProviderSearchModel
 	{
-		public string ENTITY_UID { get; set; }
+		public string ENTITY_ID { get; set; }
 		public string INSURANCE { get; set; }
 		public string TIN { get; set; }
 		public string FIRST_NAME { get; set; }

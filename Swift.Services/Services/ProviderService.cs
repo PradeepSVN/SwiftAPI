@@ -39,7 +39,7 @@ namespace Swift.Data.Services
 				using (IDbConnection dbConnection = Connection)
 				{
 					DynamicParameters ObjParm = new DynamicParameters();
-					ObjParm.Add("@ENTITY_UID", providerSearchModel.ENTITY_UID);
+					ObjParm.Add("@ENTITY_ID", providerSearchModel.ENTITY_ID);
 					ObjParm.Add("@INSURANCE", providerSearchModel.INSURANCE);
 					ObjParm.Add("@TIN", providerSearchModel.TIN);
 					ObjParm.Add("@FIRST_NAME", providerSearchModel.FIRST_NAME);
