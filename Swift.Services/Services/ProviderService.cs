@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 namespace Swift.Data.Services
 {
@@ -65,14 +66,14 @@ namespace Swift.Data.Services
 
 			}
 		}
-		public async Task<ProviderModel> ViewMemberDetailsById(Guid providerUid)
+		public async Task<ProviderInfoModel> ViewProviderDetailsById(Guid providerUid)
 		{
 			try
 			{
 				using (IDbConnection dbConnection = Connection)
 				{
 					dbConnection.Open();
-					var result = await dbConnection.QueryAsync<ProviderModel>("SW_usp_GetMemberDetailsById", new { PROVIDER_UID = providerUid },
+					var result = await dbConnection.QueryAsync<ProviderInfoModel>("SW_usp_GetProviderDetailsById", new { PROVIDER_UID = providerUid },
 						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
 					dbConnection.Close();
 					return result.SingleOrDefault();
