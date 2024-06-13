@@ -26,21 +26,21 @@ namespace Swift.Api.Controllers
 			try
 			{
 				providerModelList = await _providerService.GetAllProviderDetailsBySearch(providerSearchModel);
-				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Member Data Retrived Successfully By Search.", providerModelList, null));
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Provider Data Retrived Successfully By Search.", providerModelList, null));
 			}
 			catch (Exception ex)
 			{
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
-		[HttpGet(Name = "ViewMemberDetails")]
-		public async Task<ActionResult> ViewMemberDetails(Guid providerUid)
+		[HttpGet(Name = "ViewProviderDetails")]
+		public async Task<ActionResult> ViewProviderDetails(Guid providerUid)
 		{
 			// UserModel userModel = new UserModel();
 			try
 			{
-				var memberInfoModel = await _providerService.ViewMemberDetailsById(providerUid);
-				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Member Edit Successfully.", memberInfoModel, null));
+				var providerInfoModel = await _providerService.ViewProviderDetailsById(providerUid);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Provider View Successfully.", providerInfoModel, null));
 			}
 			catch (Exception ex)
 			{
