@@ -9,7 +9,10 @@ namespace Swift.Data.Interfaces
 {
 	public interface IProviderService
 	{
-        Task <List<ProviderDetailsModel>> GetAllProviderDetailsBySearch(ProviderSearchModel providerSearchModel);
+		Task<List<ProviderEntitiesModel>> GetProviderEntityList();
+		Task<List<ProviderInsuranceModel>> GetProviderInsuranceList(string entity_Id);
+		Task<List<ProviderTINModel>> GetProviderTinList(string entity_Id);
+		Task <List<ProviderDetailsModel>> GetAllProviderDetailsBySearch(ProviderSearchModel providerSearchModel);
 		Task<ProviderInfoModel> ViewProviderDetailsById(Guid providerUid);
 	}
 }
