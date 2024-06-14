@@ -97,6 +97,7 @@ namespace Swift.Core.Models
 		public string PROVIDER_EMAIL { get; set; }
 		public string PROVIDER_SPECIALTY_LIST { get; set; }
 		public string PROVIDER_INSURANCE_LIST { get; set; }
+		public string PROVIDER_TIN_LIST { get; set; }
 
 	}
 	public class ProviderSpecialtyModel
