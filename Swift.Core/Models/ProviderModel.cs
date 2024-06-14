@@ -106,4 +106,22 @@ namespace Swift.Core.Models
 		public string PROVIDER_CLIENT_SPECIALTY_CODE { get; set; }
 		public string PROVIDER_CLIENT_SPECIALTY_DESCRIPTION { get; set; }
 	}
+	public class ProviderEntitiesModel
+	{
+		public string ENTITY_CLIENT_ID { get; set; }
+		public string ENTITY_DESCRIPTION { get; set; }
+
+	}
+	public class ProviderTINModel
+	{
+		public string TIN_ID { get; set; }
+		public string TIN_NAME { get; set; }
+
+	}
+	public class ProviderInsuranceModel
+	{
+		public string INSURANCE_CLIENT_ID { get; set; }
+		public string INSURANCE_DESCRIPTION { get; set; }
+
+	}
 }

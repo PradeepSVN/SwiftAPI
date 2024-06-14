@@ -30,9 +30,74 @@ namespace Swift.Data.Services
                 return new SqlConnection(_configuration["ConnectionStrings:DefaultConnection"]);
             }
         }
-        #endregion
+		#endregion
 
-        
+		public async Task<List<ProviderEntitiesModel>> GetProviderEntityList()
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<ProviderEntitiesModel>("SW_usp_GetProviderEntityList",
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+		public async Task<List<ProviderInsuranceModel>> GetProviderInsuranceList(string entity_Id)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<ProviderInsuranceModel>("SW_usp_GetProviderInsuranceList", new { ENTITY_ID = entity_Id },
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
+		public async Task<List<ProviderTINModel>> GetProviderTinList(string entity_Id)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					dbConnection.Open();
+					var result = await dbConnection.QueryAsync<ProviderTINModel>("SW_usp_GetProviderTinList", new { ENTITY_ID = entity_Id },
+						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
+					dbConnection.Close();
+					return result.ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+
+			}
+		}
 		public async Task <List<ProviderDetailsModel>> GetAllProviderDetailsBySearch(ProviderSearchModel providerSearchModel)
 		{ 
 			try

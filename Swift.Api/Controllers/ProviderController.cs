@@ -19,6 +19,48 @@ namespace Swift.Api.Controllers
 		{
 			_providerService = providerService;
 		}
+		// GET: Entity details
+		[HttpGet(Name = "GetProviderEntityList")]
+		public async Task<ActionResult> GetProviderEntityList()
+		{
+			try
+			{
+				var providerEntityList = await _providerService.GetProviderEntityList();
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Provider Entity List Retrived Successfully.", providerEntityList, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
+		// GET: GetProviderInsuranceList
+		[HttpGet(Name = "GetProviderInsuranceList")]
+		public async Task<ActionResult> GetProviderInsuranceList(string entity_Id)
+		{
+			try
+			{
+				var providerInsuranceList = await _providerService.GetProviderInsuranceList(entity_Id);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Provider Insurance List Retrived Successfully.", providerInsuranceList, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
+		// GET: GetProviderTinList
+		[HttpGet(Name = "GetProviderTinList")]
+		public async Task<ActionResult> GetProviderTinList(string entity_Id)
+		{
+			try
+			{
+				var providerTinList = await _providerService.GetProviderTinList(entity_Id);
+				return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Provider Tin List Retrived Successfully.", providerTinList, null));
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 		[HttpPost(Name = "GetAllProviderDetailsBySearch")]
 		public async Task<IActionResult> GetAllProviderDetailsBySearch(ProviderSearchModel providerSearchModel)
 		{
