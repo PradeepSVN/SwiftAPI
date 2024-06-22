@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Swift.Data.Services
 {
@@ -70,9 +71,9 @@ namespace Swift.Data.Services
                     ObjParm.Add("@User_Last_Name", userModel.User_Last_Name);
                     ObjParm.Add("@User_Title", userModel.User_Title);
                     ObjParm.Add("@User_Email", userModel.User_Email);
-                    ObjParm.Add("@User_Phone", userModel.User_Phone);
+                    ObjParm.Add("@User_Phone", (userModel.User_Phone.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "")) );
                     ObjParm.Add("@User_Phone_Extn", userModel.User_Phone_Extn);
-                    ObjParm.Add("@User_Fax", userModel.User_Fax);
+                    ObjParm.Add("@User_Fax", (userModel.User_Fax.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "")) );
                     ObjParm.Add("@User_Active", userModel.User_Active);
                     ObjParm.Add("@User_Temp_Disable", userModel.User_Temp_Disable);
                     ObjParm.Add("@User_Change_Password", userModel.User_Change_Password);
@@ -195,9 +196,9 @@ namespace Swift.Data.Services
                     ObjParm.Add("@User_Last_Name", userModel.User_Last_Name);
                     ObjParm.Add("@User_Title", userModel.User_Title);
                     ObjParm.Add("@User_Email", userModel.User_Email);
-                    ObjParm.Add("@User_Phone", userModel.User_Phone);
+                    ObjParm.Add("@User_Phone", (userModel.User_Phone.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "")));
                     ObjParm.Add("@User_Phone_Extn", userModel.User_Phone_Extn);
-                    ObjParm.Add("@User_Fax", userModel.User_Fax);
+                    ObjParm.Add("@User_Fax", (userModel.User_Fax.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("-", "")));
                     ObjParm.Add("@User_Active", userModel.User_Active);
                     ObjParm.Add("@User_Temp_Disable", userModel.User_Temp_Disable);
                     ObjParm.Add("@User_Change_Password", userModel.User_Change_Password);

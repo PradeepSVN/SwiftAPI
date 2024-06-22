@@ -8,15 +8,25 @@ using System.Text;
 var MyAllowSpecificOrigins = "AllowSpecificOrigin";
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Services.AddCors(options =>
+//{
+//	options.AddPolicy(name: MyAllowSpecificOrigins,
+//		builder => builder
+//			.AllowAnyMethod()
+//			.AllowAnyHeader()
+//			.SetIsOriginAllowed(origin => true)
+//			.AllowCredentials());
+//});
+
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("CorsPolicy",
-		builder => builder			
-			.AllowAnyMethod()
-			.AllowAnyHeader()
-			.SetIsOriginAllowed(origin=>true)
-			.AllowCredentials());
+	options.AddPolicy(name: MyAllowSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("http://172.203.66.19:81/");
+					  });
 });
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -51,15 +61,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 //		});
 //});
 
-//builder.Services.AddCors(options =>
-//{
-//	options.AddPolicy(name: MyAllowSpecificOrigins,
-//					  policy =>
-//					  {
-//						  //policy.WithOrigins("http://172.203.66.19:81/");
-//						  policy.WithOrigins("http://172.203.66.19:81/");
-//					  });
-//});
+
 
 
 builder.Services.AddScoped<ILoginService, LoginService>();
@@ -81,8 +83,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 //app.UseHttpsRedirection();
-//app.UseCors(MyAllowSpecificOrigins);
-app.UseCors("CorsPolicy");
+app.UseCors(MyAllowSpecificOrigins);
 //app.UseCors("AllowReact");
 app.UseAuthentication();
 app.UseAuthorization();
