@@ -118,7 +118,7 @@ namespace Swift.Data.Services
 					dbConnection.Open();
 					var result = await dbConnection.QueryAsync<ProviderDetailsModel>("SW_usp_GetAllProviderDetailsBySearch", ObjParm,
 						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
-					dbConnection.Close();
+					 dbConnection.Close();
 					return result.ToList();
 				}
 			}
