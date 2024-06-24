@@ -104,14 +104,14 @@ namespace Swift.Data.Services
 
             }
         }
-        public async Task<List<UserModel>> GetAllUserDetails()
+        public async Task<List<UserViewModel>> GetAllUserDetails()
         {
             try
             {
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_UID = "00000000-0000-0000-0000-000000000000" },
+                    var result = await dbConnection.QueryAsync<UserViewModel>("SW_usp_GetUserDetails", new { User_UID = "00000000-0000-0000-0000-000000000000" },
 
                         commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
