@@ -167,7 +167,7 @@ namespace Swift.Data.Services
                 using (IDbConnection dbConnection = Connection)
                 {
                     dbConnection.Open();
-                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetails", new { User_UID = user_UID },
+                    var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetUserDetailsByUser", new { User_UID = user_UID },
                         commandType: CommandType.StoredProcedure, commandTimeout: 1000);
                     dbConnection.Close();
                     return result.SingleOrDefault();
