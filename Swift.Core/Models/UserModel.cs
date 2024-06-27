@@ -102,6 +102,7 @@ namespace Swift.Core.Models
 		public string? Role_Name { get; set; }
 		public string Entities { get; set; }
 		public string TINs { get; set; }
+		public string TotalCount { get; set; }
 	}
 	public class UserSearchModel
 	{
@@ -113,7 +114,11 @@ namespace Swift.Core.Models
         public string User_Active { get; set; }
         public string User_Entities { get; set; }
         public string User_Tins { get; set; }
-    }
+		public int Page { get; set; }
+		public int Size { get; set; }
+		public string SortColumn { get; set; }
+		public string Order { get; set; }
+	}
 	public class UserEntitieModel
 	{
 		public string Entity_ID { get; set; }

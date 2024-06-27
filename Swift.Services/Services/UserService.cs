@@ -127,7 +127,7 @@ namespace Swift.Data.Services
 
             }
         }
-		public async Task<List<UserModel>> GetAllUserDetailsBySearch(UserSearchModel userSearchModel)
+		public async Task<List<UserViewModel>> GetAllUserDetailsBySearch(UserSearchModel userSearchModel)
 		{
 			try
 			{
@@ -142,9 +142,12 @@ namespace Swift.Data.Services
 					ObjParm.Add("@User_Active", userSearchModel.User_Active);
 					ObjParm.Add("@User_Entities", userSearchModel.User_Entities);
 					ObjParm.Add("@User_Tins", userSearchModel.User_Tins);
-					
+					ObjParm.Add("@page", userSearchModel.Page);
+					ObjParm.Add("@size", userSearchModel.Size);
+					ObjParm.Add("@sortColumn", userSearchModel.SortColumn);
+					ObjParm.Add("@Order", userSearchModel.Order);
 					dbConnection.Open();
-					var result = await dbConnection.QueryAsync<UserModel>("SW_usp_GetAllUserDetailsBySearch", ObjParm,
+					var result = await dbConnection.QueryAsync<UserViewModel>("SW_usp_GetAllUserDetailsBySearch", ObjParm,
 
 						commandType: CommandType.StoredProcedure, commandTimeout: 1000);
 					dbConnection.Close();
