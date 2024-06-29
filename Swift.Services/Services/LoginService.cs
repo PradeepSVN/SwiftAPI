@@ -75,5 +75,30 @@ namespace Swift.Data.Services
 
             //return result != null ? true : false;
         }
-    }
+		public async Task<bool> ChengePassword(ChangePasswordModel changePasswordModel)
+		{
+			try
+			{
+				using (IDbConnection dbConnection = Connection)
+				{
+					DynamicParameters ObjParm = new DynamicParameters();
+					ObjParm.Add("@User_Uid", changePasswordModel.User_UID);
+					ObjParm.Add("@PassWord", changePasswordModel.Password);
+					ObjParm.Add("@result", dbType: DbType.Int32, direction: ParameterDirection.Output, size: 5215585);
+					dbConnection.Open();
+					await dbConnection.ExecuteAsync("SW_usp_UserChangePassword", ObjParm, commandType: CommandType.StoredProcedure);
+					int result = ObjParm.Get<int>("@result");
+					dbConnection.Close();
+					return result == 1 ? true : false;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			//var result = await _customerRepository.GetByIdAsync(customerId);
+
+			//return result != null ? true : false;
+		}
+	}
 }

@@ -12,4 +12,10 @@ namespace Swift.Core.Models
 		public required string Password { get; set; }
 
 	}
+	public class ChangePasswordModel
+	{
+		public required Guid User_UID { get; set; }
+		public required string Password { get; set; }
+
+	}
 }

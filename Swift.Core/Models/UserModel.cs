@@ -88,7 +88,7 @@ namespace Swift.Core.Models
 		public Guid Updated_By_User_UID { get; set; }
 
 		public string Updated_Date { get; set; }
-		public DateTime User_Password_Changed_Date { get; set; }
+		public string User_Password_Changed_Date { get; set; }
 		public string? User_Note { get; set; }
 
 		public required string User_UserName { get; set; }
@@ -103,6 +103,7 @@ namespace Swift.Core.Models
 		public string Entities { get; set; }
 		public string TINs { get; set; }
 		public string TotalCount { get; set; }
+		public string User_Last_Login_Date { get; set; }
 	}
 	public class UserSearchModel
 	{

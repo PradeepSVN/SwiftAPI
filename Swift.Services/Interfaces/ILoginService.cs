@@ -11,5 +11,6 @@ namespace Swift.Data.Interfaces
     {
         Task<bool> Login(LoginModel loginModel);
         Task<UserModel> GetLoginUserDetails(LoginModel loginModel);
-    }
+		Task<bool> ChengePassword(ChangePasswordModel changePasswordModel);
+	}
 }
