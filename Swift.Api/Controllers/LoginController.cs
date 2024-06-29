@@ -57,7 +57,8 @@ namespace Swift.Api.Controllers
 						{
 							token = tokenString,
 							userid = userModel.Result.User_UID,
-							role_UID=userModel.Result.Role_UID
+							role_UID=userModel.Result.Role_UID,
+							User_Change_Password=userModel.Result.User_Change_Password
 						};
 						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Login Success", myData, null));
 					}
@@ -97,6 +98,42 @@ namespace Swift.Api.Controllers
 
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
+		[HttpPost(Name = "ChangePassword")]
+		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel changePasswordModel)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					IActionResult response = Unauthorized();
+					using (Aes myAes = Aes.Create())
+					{
+						myAes.Key = Encoding.UTF8.GetBytes(_configuration["SwiftSaltKey:Key"]);
+						byte[] iv = new byte[16];
+						myAes.IV = iv;
+						// Encrypt the string to an array of bytes.
+						changePasswordModel.Password = EncryptionHelper.EncryptStringToBytes_Aes(changePasswordModel.Password, myAes.Key, myAes.IV);
+					}
+					var status = await _loginService.ChengePassword(changePasswordModel);
+					if (status)
+					{						
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Changed Password Successfully.", null, null));
+					}
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Invalid Details", null, null));
+					}
 
+				}
+				else
+				{
+					return BadRequest(new ApiResponse(Convert.ToInt32(HttpStatusCode.BadRequest), APIStatus.Failed.ToString(), "Enter Valid Details.", null, null));
+				}
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+			}
+		}
 	}
 }
