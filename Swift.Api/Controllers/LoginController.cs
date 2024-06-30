@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Cors;
+using Swift.Data.Services;
 
 namespace Swift.Api.Controllers
 {
@@ -135,5 +136,81 @@ namespace Swift.Api.Controllers
 				return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
 			}
 		}
+		[HttpPost(Name = "ForgotPassword")]
+		public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					if (forgotPasswordModel != null && forgotPasswordModel.Email != null && !string.IsNullOrWhiteSpace(forgotPasswordModel.Email))
+					{
+						bool isExist = await _loginService.FindByEmail(forgotPasswordModel.Email);
+						if (isExist)
+						{
+
+							//var password = Generate(8);
+							//var email = forgetPassword.Email;
+							//forgetPassword.Email = EncryptionLibrary.EncryptString(forgetPassword.Email);
+
+							//await _emailSenderService.SendForgotPasswordEmailAsync(forgetPassword.Email, email);
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Success.ToString(), "Forgot Password Successfully.", null, null));
+						}
+						else
+						{
+							return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Email not exist.", null, null));
+						}
+					}
+					else
+					{
+						return Ok(new ApiResponse(Convert.ToInt32(HttpStatusCode.OK), APIStatus.Failed.ToString(), "Email required.", null, null));
+					}
+				}
+				catch (Exception ex)
+				{
+					return BadRequest(new ApiResponse(500, APIStatus.Failed.ToString(), "An internal server error occurred.", null, ex.Message));
+				}
+			}
+			else
+			{
+				return BadRequest(new ApiResponse(Convert.ToInt32(HttpStatusCode.BadRequest), APIStatus.Failed.ToString(), "Enter Valid Details.", null, null));
+			}
+		}
+
+		//public static string Generate(int length = 24)
+		//{
+		//	const string lower = "abcdefghijklmnopqrstuvwxyz";
+		//	const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		//	const string number = "1234567890";
+		//	const string special = "!@#$%^&*_-=+";
+
+		//	// Get cryptographically random sequence of bytes
+		//	var bytes = new byte[length];
+		//	new RNGCryptoServiceProvider().GetBytes(bytes);
+
+		//	// Build up a string using random bytes and character classes
+		//	var res = new StringBuilder();
+		//	foreach (byte b in bytes)
+		//	{
+		//		// Randomly select a character class for each byte
+		//		switch (_rand.Next(4))
+		//		{
+		//			// In each case use mod to project byte b to the correct range
+		//			case 0:
+		//				res.Append(lower[b % lower.Count()]);
+		//				break;
+		//			case 1:
+		//				res.Append(upper[b % upper.Count()]);
+		//				break;
+		//			case 2:
+		//				res.Append(number[b % number.Count()]);
+		//				break;
+		//			case 3:
+		//				res.Append(special[b % special.Count()]);
+		//				break;
+		//		}
+		//	}
+		//	return res.ToString();
+		//}
 	}
 }

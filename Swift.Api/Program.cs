@@ -11,12 +11,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy(name: MyAllowSpecificOrigins,
-		builder => builder
-			.AllowAnyMethod()
-			.AllowAnyHeader()
-			.SetIsOriginAllowed(origin => true)
-			.AllowCredentials());
+					 policy =>
+					 {
+						 policy.WithOrigins("http://vmswifthcdev1.eastus2.cloudapp.azure.com:81",
+											 "http://172.203.66.19:81",
+											 "https://vmswifthcdev1.eastus2.cloudapp.azure.com")
+											 .AllowAnyHeader()
+											 .AllowCredentials()
+											 .AllowAnyMethod();
+					 });
 });
+//builder.Services.AddCors(options =>
+//{
+//	options.AddPolicy(name: MyAllowSpecificOrigins,
+//		builder => builder
+//			.AllowAnyMethod()
+//			.AllowAnyHeader()
+//			.SetIsOriginAllowed(origin => true)
+//			.AllowCredentials());
+//});
 //builder.Services.AddCors(options =>
 //{
 //	options.AddPolicy(name: MyAllowSpecificOrigins,
