@@ -49,7 +49,7 @@ namespace Swift.Data.Services
 				mail.To.Add(new MailAddress(_configuration["EmailSettings:ToEmail"]));
 				mail.CC.Add(new MailAddress(_configuration["EmailSettings:CcEmail"]));
 
-				mail.Subject = "VADN - " + subject;
+				mail.Subject = "Swift - " + subject;
 				mail.Body = messageBody;
 				mail.IsBodyHtml = true;
 				mail.Priority = MailPriority.High;
